@@ -1,0 +1,11 @@
+bs4
+requests
+fastapi
+uvicorn
+sqlalchemy
+psycopg2
+wait-for-it
+alembic
+python-dotenv
+celery
+flower

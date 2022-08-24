@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+
+  db:
+    container_name: db
+    image: postgres:14.4
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: real_estate
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/api
+    command: bash -c "wait-for-it --service db:5432 && alembic upgrade head && python run.py"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "5050:80"
+    logging:
+      driver: none
+
+volumes:
+  db_data:
+  pgadmin_data:
