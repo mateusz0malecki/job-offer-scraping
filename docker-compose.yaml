@@ -8,7 +8,7 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: real_estate
+      POSTGRES_DB: job_offers
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
@@ -20,7 +20,7 @@ services:
       - "8000:8000"
     volumes:
       - ./api:/api
-    command: bash -c "wait-for-it --service db:5432 && alembic upgrade head && python run.py"
+    command: bash -c "wait-for-it --service db:5432 && python run.py"
 
   pgadmin:
     container_name: pgadmin
