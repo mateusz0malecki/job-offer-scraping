@@ -1,5 +1,6 @@
-from sqlalchemy import Column, String, Integer, DateTime, Date
+from sqlalchemy import Column, String, Integer, DateTime, Date, Boolean
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 from db.database import Base
 
@@ -19,8 +20,13 @@ class JobOffer(Base):
     offer_deadline = Column(Date)
     working_mode = Column(String(64))
     working_time = Column(String(64))
+    remote_recruitment = Column(Boolean)
+    immediate_employment = Column(Boolean)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    responsibilities = relationship("Responsibilities", backref="job_offer", cascade="all, delete-orphan")
+    requirements = relationship("Requirements", backref="job_offer", cascade="all, delete-orphan")
+    benefits = relationship("Benefits", backref="job_offer", cascade="all, delete-orphan")
 
     @staticmethod
     def get_offer_by_link(db, link):

@@ -7,6 +7,10 @@ class Settings(BaseSettings):
     postgres_db: str
     postgres_password: str
     postgres_host: str
+    celery_broker_url: str
+    celery_result_backend: str
+    amqp_host: str
+    amqp_uri: str
 
     class Config:
         env_file = ".env"

@@ -2,10 +2,12 @@ import logging
 from bs4 import BeautifulSoup
 from requests import get
 
+from models.model_job_offer import JobOffer
+
 logging.getLogger(__name__)
 
 
-def get_links_to_offers_pracuj(city: str, category: str):
+def get_links_to_offers_pracuj(db, city: str, category: str):
     page_number = 1
     links = []
     cities = {
@@ -26,7 +28,7 @@ def get_links_to_offers_pracuj(city: str, category: str):
         'Poznań': 'poznan;wp',
         'Zielona Góra': 'zielona%20gora;wp',
         'Gorzów Wielkopolski': 'gorzow%20wielkopolski;wp',
-        'kielce': 'kielce;wp'
+        'Kielce': 'kielce;wp'
     }
     categories = {
         'Administracja biurowa': 5001,
@@ -81,9 +83,22 @@ def get_links_to_offers_pracuj(city: str, category: str):
                 break
 
             for item in scrap:
+                logging.info(f"{item['href']}")
                 links.append(item['href'])
 
         except Exception as e:
             logging.error(f'get_links_to_offers_pracuj: {e}')
 
-    return links
+    offers_to_add = []
+    for link in links:
+        offer = JobOffer(
+            link=link,
+            city=city,
+            category=category
+        )
+        offers_to_add.append(offer)
+
+    db.add_all(offers_to_add)
+    db.commit()
+    for n in offers_to_add:
+        db.refresh(n)
