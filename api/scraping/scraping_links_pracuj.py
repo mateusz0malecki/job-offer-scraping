@@ -89,14 +89,17 @@ def get_links_to_offers_pracuj(db, city: str, category: str):
         except Exception as e:
             print(f'get_links_to_offers_pracuj: {e}')
 
+    links = list(set(links))
+
     offers_to_add = []
     for link in links:
-        offer = JobOffer(
-            link=link,
-            city=city,
-            category=category
-        )
-        offers_to_add.append(offer)
+        if not JobOffer.get_offer_by_link(db, link):
+            offer = JobOffer(
+                link=link,
+                city=city,
+                category=category
+            )
+            offers_to_add.append(offer)
 
     db.add_all(offers_to_add)
     db.commit()

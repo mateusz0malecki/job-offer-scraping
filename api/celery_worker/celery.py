@@ -16,14 +16,18 @@ app = Celery(
 )
 
 app.conf.beat_schedule = {
-    "setup_links": {
-        "task": "get_links",
+    "setup_links_pracuj": {
+        "task": "get_links_pracuj",
         "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
     },
-    "setup_offers": {
-        "task": "get_offers_info",
+    "setup_offers_pracuj": {
+        "task": "get_offers_info_pracuj",
         "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
-    }
+    },
+    "setup_links_gowork": {
+        "task": "get_links_gowork",
+        "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
+    },
 }
 
 if __name__ == '__main__':

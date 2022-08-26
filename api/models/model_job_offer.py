@@ -8,7 +8,7 @@ from db.database import Base
 class JobOffer(Base):
     __tablename__ = "job_offer"
     id = Column(Integer, primary_key=True, index=True)
-    link = Column(String(256))
+    link = Column(String(256), unique=True)
     city = Column(String(64))
     category = Column(String(64))
     title = Column(String(256))
