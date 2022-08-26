@@ -6,7 +6,7 @@ from models.model_job_offer import JobOffer
 from models.model_extras import Responsibility, Requirement, Benefit
 
 
-def scraping_pracuj(link):
+def scraping(link):
     page = get(link).content
     bs = BeautifulSoup(page, 'html.parser')
     return bs
@@ -15,7 +15,7 @@ def scraping_pracuj(link):
 def scraping_job_offer_pracuj(db, link):
     offer_to_edit = JobOffer.get_offer_by_link(db, link)
 
-    bs = scraping_pracuj(link)
+    bs = scraping(link)
 
     title = bs.find('h1', class_='offer-viewkHIhn3').get_text()
     company_name = bs.find('h2', class_='offer-viewwtdXJ4').get_text().split('O firmie')[0]
@@ -162,6 +162,6 @@ def scraping_job_offer_pracuj(db, link):
 
 
 def scrap_info_for_empty_offers_pracuj(db):
-    empty_offers = JobOffer.get_empty_offers(db)
+    empty_offers = JobOffer.get_empty_offers(db).filter(JobOffer.link.contains('www.pracuj.pl')).all()
     for offer in empty_offers:
         scraping_job_offer_pracuj(db, offer.link)

@@ -34,4 +34,4 @@ class JobOffer(Base):
 
     @staticmethod
     def get_empty_offers(db):
-        return db.query(JobOffer).filter(JobOffer.title == None).all()
+        return db.query(JobOffer).filter(JobOffer.title == None)

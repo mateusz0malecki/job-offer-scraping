@@ -1,8 +1,8 @@
-"""Init
+"""init
 
-Revision ID: 4bf3a649dbcf
+Revision ID: 8109a62e55d4
 Revises: 
-Create Date: 2022-08-26 06:40:49.862320
+Create Date: 2022-08-26 12:48:41.640006
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4bf3a649dbcf'
+revision = '8109a62e55d4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,7 +36,8 @@ def upgrade() -> None:
     sa.Column('immediate_employment', sa.Boolean(), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('link')
     )
     op.create_index(op.f('ix_job_offer_id'), 'job_offer', ['id'], unique=False)
     op.create_table('benefit',

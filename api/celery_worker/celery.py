@@ -28,6 +28,10 @@ app.conf.beat_schedule = {
         "task": "get_links_gowork",
         "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
     },
+    "setup_offers_gowork": {
+        "task": "get_offers_info_gowork",
+        "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
+    },
 }
 
 if __name__ == '__main__':
