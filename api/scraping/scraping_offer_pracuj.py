@@ -157,6 +157,8 @@ def scraping_job_offer_pracuj(db, link):
     offer_to_edit.working_time = working_time
     offer_to_edit.remote_recruitment = remote_recruitment
     offer_to_edit.immediate_employment = immediate_employment
+    db.commit()
+    db.refresh(offer_to_edit)
 
 
 def scrap_info_for_empty_offers_pracuj(db):

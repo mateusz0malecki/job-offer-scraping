@@ -24,9 +24,9 @@ class JobOffer(Base):
     immediate_employment = Column(Boolean)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    responsibilities = relationship("Responsibilities", backref="job_offer", cascade="all, delete-orphan")
-    requirements = relationship("Requirements", backref="job_offer", cascade="all, delete-orphan")
-    benefits = relationship("Benefits", backref="job_offer", cascade="all, delete-orphan")
+    responsibilities = relationship("Responsibility", backref="job_offer", cascade="all, delete-orphan")
+    requirements = relationship("Requirement", backref="job_offer", cascade="all, delete-orphan")
+    benefits = relationship("Benefit", backref="job_offer", cascade="all, delete-orphan")
 
     @staticmethod
     def get_offer_by_link(db, link):
