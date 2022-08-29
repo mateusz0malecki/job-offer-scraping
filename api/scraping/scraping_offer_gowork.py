@@ -62,7 +62,7 @@ def scraping_job_offer_gowork(db, link):
             value_to = salary.split('-')[1].strip().split(' ')[0]
             earning_value_to = int(''.join([i for i in value_to if i.isdigit()]))
 
-        if earning_value_from < 200:
+        if earning_value_from < 300:
             earning_value_from *= 160
 
     if bs.find('div', class_='job-online-interview'):

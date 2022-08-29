@@ -8,6 +8,8 @@ from scraping.scraping_links_pracuj import get_links_to_offers_pracuj
 from scraping.scraping_offer_pracuj import scrap_info_for_empty_offers_pracuj
 from scraping.scraping_links_gowork import get_links_to_offers_gowork
 from scraping.scraping_offer_gowork import scrap_info_for_empty_offers_gowork
+from scraping.scraping_links_praca import get_links_to_offers_praca
+from scraping.scraping_offer_praca import scrap_info_for_empty_offers_praca
 
 logging.getLogger(__name__)
 
@@ -138,3 +140,60 @@ def get_links_gowork():
 def get_offers_info_gowork():
     scrap_info_for_empty_offers_gowork(db_session)
     logging.info("Offers filled with info - gowork.pl")
+
+
+@app.task(name="get_links_praca", base=SQLAlchemyTask)
+def get_links_praca():
+    categories = [
+        'Administracja biurowa',
+        'Administracja publiczna / Służba publiczna',
+        'Architektura',
+        'Badania i rozwój',
+        'BHP / Ochrona środowiska',
+        'Budownictwo',
+        'Doradztwo / Konsulting',
+        'Energetyka',
+        'Edukacja / Szkolenia',
+        'Farmaceutyka / Biotechnologia',
+        'Finanse / Ekonomia',
+        'Franczyza / Własny biznes',
+        'Gastronomia / Catering',
+        'Hotelarstwo / Gastronomia / Turystyka',
+        'Human Resources / Zasoby ludzkie',
+        'Internet / e-Commerce / Nowe media',
+        'Inżynieria',
+        'IT - Administracja',
+        'IT - Rozwój oprogramowania',
+        'Kadra zarządzająca',
+        'Kontrola jakości',
+        'Księgowość',
+        'Łańcuch dostaw',
+        'Marketing',
+        'Montaż / Serwis / Technika',
+        'Motoryzacja',
+        'Nieruchomości',
+        'Ochrona osób i mienia',
+        'Opieka zdrowotna',
+        'Praca fizyczna',
+        'Prawo',
+        'Produkcja',
+        'Reklama / Grafika / Kreacja / Fotografia',
+        'Sport',
+        'Sprzedaż',
+        'Telekomunikacja',
+        'Tłumaczenia',
+        'Transport / Spedycja / Logistyka',
+        'Ubezpieczenia',
+        'Zakupy',
+        'Zdrowie / Uroda / Rekreacja'
+    ]
+    for city in cities:
+        for category in categories:
+            get_links_to_offers_praca(db_session, city, category)
+    logging.info("DB filled with new links - praca.pl")
+
+
+@app.task(name="get_offers_info_praca", base=SQLAlchemyTask)
+def get_offers_info_praca():
+    scrap_info_for_empty_offers_praca(db_session)
+    logging.info("Offers filled with info - praca.pl")
