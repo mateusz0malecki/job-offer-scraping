@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
 from db.database import Base
+from .model_extras import Responsibility, Requirement, Benefit
 
 
 class JobOffer(Base):
@@ -31,6 +32,10 @@ class JobOffer(Base):
     @staticmethod
     def get_offer_by_link(db, link):
         return db.query(JobOffer).filter(JobOffer.link == link).first()
+
+    @staticmethod
+    def get_offer_by_id(db, offer_id):
+        return db.query(JobOffer).filter(JobOffer.id == offer_id).first()
 
     @staticmethod
     def get_empty_offers(db):

@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from settings import get_settings
+from routes.job_offers import router as offers_router
 
 
 def create_app() -> FastAPI:
@@ -17,6 +18,7 @@ def create_app() -> FastAPI:
     )
 
     # Routes
+    app.include_router(offers_router)
 
     # Logging
     logging.basicConfig(
