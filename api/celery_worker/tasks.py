@@ -10,6 +10,7 @@ from scraping.scraping_links_gowork import get_links_to_offers_gowork
 from scraping.scraping_offer_gowork import scrap_info_for_empty_offers_gowork
 from scraping.scraping_links_praca import get_links_to_offers_praca
 from scraping.scraping_offer_praca import scrap_info_for_empty_offers_praca
+from scraping.scraping_links_aplikuj import get_links_to_offers_aplikuj
 
 logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ cities = [
 
 class SQLAlchemyTask(Task):
     """
-    An abstract Celery Task that ensures that the connection the the
+    An abstract Celery Task that ensures that the connection the
     database is closed on task completion
     """
     abstract = True
@@ -197,3 +198,52 @@ def get_links_praca():
 def get_offers_info_praca():
     scrap_info_for_empty_offers_praca(db_session)
     logging.info("Offers filled with info - praca.pl")
+
+
+@app.task(name="get_links_aplikuj", base=SQLAlchemyTask)
+def get_links_aplikuj():
+    categories = [
+        'Administracja biurowa',
+        'Administracja publiczna / Służba publiczna',
+        'Badania i rozwój',
+        'BHP / Ochrona środowiska',
+        'Budownictwo',
+        'Call Center',
+        'Doradztwo / Konsulting',
+        'Energetyka',
+        'Edukacja / Szkolenia',
+        'Finanse / Ekonomia',
+        'Franczyza / Własny biznes',
+        'Hotelarstwo / Gastronomia / Turystyka',
+        'Human Resources / Zasoby ludzkie',
+        'Internet / e-Commerce / Nowe media',
+        'Inżynieria',
+        'IT - Rozwój oprogramowania',
+        'Kadra zarządzająca',
+        'Księgowość',
+        'Łańcuch dostaw',
+        'Marketing',
+        'Montaż / Serwis / Technika',
+        'Motoryzacja',
+        'Nieruchomości',
+        'Opieka zdrowotna',
+        'Praca fizyczna',
+        'Prawo',
+        'Produkcja',
+        'Reklama / Grafika / Kreacja / Fotografia',
+        'Rolnictwo',
+        'Rzemiosło',
+        'Sport',
+        'Sprzedaż',
+        'Sztuka / Rozrywka / Rekreacja / Projektowanie',
+        'Telekomunikacja',
+        'Transport / Spedycja / Logistyka',
+        'Ubezpieczenia',
+        'Zdrowie / Uroda / Rekreacja',
+        'Inne',
+    ]
+    for city in cities:
+        for category in categories:
+            get_links_to_offers_aplikuj(db_session, city, category)
+    logging.info("DB filled with new links - aplikuj.pl")
+    

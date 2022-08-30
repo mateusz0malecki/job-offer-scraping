@@ -40,6 +40,10 @@ app.conf.beat_schedule = {
         "task": "get_offers_info_praca",
         "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
     },
+    "setup_links_aplikuj": {
+        "task": "get_links_aplikuj",
+        "schedule": crontab(hour=0, minute=0, day_of_week='sunday')
+    },
 }
 
 if __name__ == '__main__':
