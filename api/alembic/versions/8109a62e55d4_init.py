@@ -42,7 +42,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_job_offer_id'), 'job_offer', ['id'], unique=False)
     op.create_table('benefit',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('benefit', sa.String(length=512), nullable=True),
+    sa.Column('benefit', sa.String(length=2048), nullable=True),
     sa.Column('job_offer_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['job_offer_id'], ['job_offer.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
@@ -50,7 +50,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_benefit_id'), 'benefit', ['id'], unique=False)
     op.create_table('requirement',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('requirement', sa.String(length=512), nullable=True),
+    sa.Column('requirement', sa.String(length=2048), nullable=True),
     sa.Column('must_have', sa.Boolean(), nullable=True),
     sa.Column('job_offer_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['job_offer_id'], ['job_offer.id'], ondelete='CASCADE'),
@@ -59,7 +59,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_requirement_id'), 'requirement', ['id'], unique=False)
     op.create_table('responsibility',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('responsibility', sa.String(length=512), nullable=True),
+    sa.Column('responsibility', sa.String(length=2048), nullable=True),
     sa.Column('job_offer_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['job_offer_id'], ['job_offer.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

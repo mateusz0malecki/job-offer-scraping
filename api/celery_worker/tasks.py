@@ -11,28 +11,29 @@ from scraping.scraping_offer_gowork import scrap_info_for_empty_offers_gowork
 from scraping.scraping_links_praca import get_links_to_offers_praca
 from scraping.scraping_offer_praca import scrap_info_for_empty_offers_praca
 from scraping.scraping_links_aplikuj import get_links_to_offers_aplikuj
+from scraping.scraping_offer_aplikuj import scrap_info_for_empty_offers_aplikuj
 
 logging.getLogger(__name__)
 
 cities = [
         'Gdańsk',
-        'Szczecin',
-        'Białystok',
-        'Toruń',
-        'Bydgoszcz',
-        'Olsztyn',
-        'Warszawa',
-        'Lublin',
-        'Rzeszow',
-        'Kraków',
-        'Katowice',
-        'Opole',
-        'Wrocław',
-        'Łódź',
-        'Poznań',
-        'Zielona Góra',
-        'Gorzów Wielkopolski',
-        'Kielce'
+        # 'Szczecin',
+        # 'Białystok',
+        # 'Toruń',
+        # 'Bydgoszcz',
+        # 'Olsztyn',
+        # 'Warszawa',
+        # 'Lublin',
+        # 'Rzeszow',
+        # 'Kraków',
+        # 'Katowice',
+        # 'Opole',
+        # 'Wrocław',
+        # 'Łódź',
+        # 'Poznań',
+        # 'Zielona Góra',
+        # 'Gorzów Wielkopolski',
+        # 'Kielce'
     ]
 
 
@@ -204,46 +205,51 @@ def get_offers_info_praca():
 def get_links_aplikuj():
     categories = [
         'Administracja biurowa',
-        'Administracja publiczna / Służba publiczna',
-        'Badania i rozwój',
-        'BHP / Ochrona środowiska',
-        'Budownictwo',
-        'Call Center',
-        'Doradztwo / Konsulting',
-        'Energetyka',
-        'Edukacja / Szkolenia',
-        'Finanse / Ekonomia',
-        'Franczyza / Własny biznes',
-        'Hotelarstwo / Gastronomia / Turystyka',
-        'Human Resources / Zasoby ludzkie',
-        'Internet / e-Commerce / Nowe media',
-        'Inżynieria',
-        'IT - Rozwój oprogramowania',
-        'Kadra zarządzająca',
-        'Księgowość',
-        'Łańcuch dostaw',
-        'Marketing',
-        'Montaż / Serwis / Technika',
-        'Motoryzacja',
-        'Nieruchomości',
-        'Opieka zdrowotna',
-        'Praca fizyczna',
-        'Prawo',
-        'Produkcja',
-        'Reklama / Grafika / Kreacja / Fotografia',
-        'Rolnictwo',
-        'Rzemiosło',
-        'Sport',
-        'Sprzedaż',
-        'Sztuka / Rozrywka / Rekreacja / Projektowanie',
-        'Telekomunikacja',
-        'Transport / Spedycja / Logistyka',
-        'Ubezpieczenia',
-        'Zdrowie / Uroda / Rekreacja',
-        'Inne',
+        # 'Administracja publiczna / Służba publiczna',
+        # 'Badania i rozwój',
+        # 'BHP / Ochrona środowiska',
+        # 'Budownictwo',
+        # 'Call Center',
+        # 'Doradztwo / Konsulting',
+        # 'Energetyka',
+        # 'Edukacja / Szkolenia',
+        # 'Finanse / Ekonomia',
+        # 'Franczyza / Własny biznes',
+        # 'Hotelarstwo / Gastronomia / Turystyka',
+        # 'Human Resources / Zasoby ludzkie',
+        # 'Internet / e-Commerce / Nowe media',
+        # 'Inżynieria',
+        # 'IT - Rozwój oprogramowania',
+        # 'Kadra zarządzająca',
+        # 'Księgowość',
+        # 'Łańcuch dostaw',
+        # 'Marketing',
+        # 'Montaż / Serwis / Technika',
+        # 'Motoryzacja',
+        # 'Nieruchomości',
+        # 'Opieka zdrowotna',
+        # 'Praca fizyczna',
+        # 'Prawo',
+        # 'Produkcja',
+        # 'Reklama / Grafika / Kreacja / Fotografia',
+        # 'Rolnictwo',
+        # 'Rzemiosło',
+        # 'Sport',
+        # 'Sprzedaż',
+        # 'Sztuka / Rozrywka / Rekreacja / Projektowanie',
+        # 'Telekomunikacja',
+        # 'Transport / Spedycja / Logistyka',
+        # 'Ubezpieczenia',
+        # 'Zdrowie / Uroda / Rekreacja',
+        # 'Inne',
     ]
     for city in cities:
         for category in categories:
             get_links_to_offers_aplikuj(db_session, city, category)
     logging.info("DB filled with new links - aplikuj.pl")
-    
+
+
+@app.task(name="get_offers_info_aplikuj", base=SQLAlchemyTask)
+def get_offers_info_aplikuj():
+    scrap_info_for_empty_offers_aplikuj(db_session)
+    logging.info("Offers filled with info - aplikuj.pl")
